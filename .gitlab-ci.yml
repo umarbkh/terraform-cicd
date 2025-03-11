@@ -1,12 +1,9 @@
-# This file is a template, and might need editing before it works on your project.
-# Full project: https://gitlab.com/pages/plain-html
-
 image: hashicorp/terraform:latest
 
 stages:
   - validate
-  - build
-  - deploy
+  - plan
+  - apply
 
 validate:
   stage: validate
@@ -14,12 +11,19 @@ validate:
     - terraform init
     - terraform validate
 
-build:
-  stage: build
+plan:
+  stage: plan
   script:
+    - terraform init
     - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - tfplan
 
-deploy:
-  stage: deploy
+apply:
+  stage: apply
   script:
-    - terraform apply tfplan
+    - terraform init
+    - terraform apply -auto-approve tfplan
+  only:
+    - master # Change to 'main' if your branch is named 'main'
