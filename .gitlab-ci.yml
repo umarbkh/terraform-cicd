@@ -1,14 +1,25 @@
 # This file is a template, and might need editing before it works on your project.
 # Full project: https://gitlab.com/pages/plain-html
 
-image: busybox
+image: hashicorp/terraform:latest
 
-pages:
+stages:
+  - validate
+  - build
+  - deploy
+
+validate:
+  stage: validate
+  script:
+    - terraform init
+    - terraform validate
+
+build:
+  stage: build
+  script:
+    - terraform plan -out=tfplan
+
+deploy:
   stage: deploy
   script:
-    - echo "The site will be deployed to $CI_PAGES_URL"
-  artifacts:
-    paths:
-      - public
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - terraform apply tfplan
