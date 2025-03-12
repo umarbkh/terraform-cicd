@@ -25,7 +25,7 @@ module "sg" {
 
   vpc_id   = module.vpc.vpc_id
   name     = "${var.project_name}-sg"
-  addrule  = ["ssh", "http"] # Add predefined rules here
+  addrule  = ["ssh", "http", "egress_all"] # Add predefined rules here
   custom_rules = [
     {
       type        = "ingress"
@@ -40,18 +40,21 @@ module "sg" {
   }
 }
 
-output "vpc_id" {
-  value = module.vpc.vpc_id
-}
+module "ec2" {
+  source = "./modules/ec2"
 
-output "public_subnet_ids" {
-  value = module.vpc.public_subnet_ids
-}
-
-output "private_subnet_ids" {
-  value = module.vpc.private_subnet_ids
-}
-
-output "security_group_id" {
-  value = module.sg.security_group_id
+  ami_id             = var.ami_id
+  instance_type      = var.instance_type
+  subnet_id          = module.vpc.public_subnet_ids[0] # Use first public subnet
+  security_group_id  = module.sg.security_group_id
+  project_name       = var.project_name
+  tags               = var.tags
+  user_data          = <<-EOF
+                      #!/bin/bash
+                      yum update -y
+                      yum install -y httpd
+                      systemctl start httpd
+                      systemctl enable httpd
+                      echo "<h1>Hello from Terraform EC2!</h1>" > /var/www/html/index.html
+                      EOF
 }
