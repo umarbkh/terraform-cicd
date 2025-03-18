@@ -1,17 +1,31 @@
-Work in Progress, More modules coming soon
+# Terraform AWS Deployment Project
+
+**Work in Progress**: This project is actively being developed, with new modules and features being added regularly. Stay tuned for updates!
 
 ---
 
-# Terraform + Ansible AWS Deployment Project
+## About Me
 
-This project demonstrates a **production-ready infrastructure deployment** on AWS using **Terraform** and **Ansible**. It follows a **modular, reusable, and dynamic approach** to provision and configure resources, showcasing best practices for CI/CD, infrastructure as code (IaC), and configuration management.
+**Umar Bukhari**  
+AWS Sysops, AWS CCP, CompTIA A+ Certified Professional.  
+My past experience includes MEAN Stack, PHP, JavaScript, WordPress, and basic Python automation.  
+
+- **LinkedIn**: [https://www.linkedin.com/in/umar-bukhari-96203284/](https://www.linkedin.com/in/umar-bukhari-96203284/)  
+- **Credly**: [https://www.credly.com/users/umar-bukhari.f28cd07d](https://www.credly.com/users/umar-bukhari.f28cd07d)  
+
+I am available for work, contracts, and job opportunities. Feel free to reach out via LinkedIn!
+
+---
+
+## Project Overview
+
+This project demonstrates a **production-ready infrastructure deployment** on AWS using **Terraform**. It follows a **modular, reusable, and dynamic approach** to provision and configure resources, showcasing best practices for CI/CD and infrastructure as code (IaC).
 
 ---
 
 ## Features
 
 - **Terraform**: Infrastructure as Code (IaC) to provision AWS resources.
-- **Ansible**: Configuration management to set up and configure EC2 instances.
 - **Modular Design**: Reusable Terraform modules for VPC, EC2, security groups, and more.
 - **Dynamic Configuration**: Supports multiple environments (e.g., prod, dev, test) and regions.
 - **CI/CD Integration**: GitHub Actions for automated validation, planning, and deployment.
@@ -24,8 +38,7 @@ Before using this project, ensure you have the following:
 
 1. **AWS Account**: With IAM credentials (access key and secret key).
 2. **Terraform**: Installed locally (if testing locally).
-3. **Ansible**: Installed locally (if testing locally).
-4. **GitHub Repository**: To host the project and enable CI/CD.
+3. **GitHub Repository**: To host the project and enable CI/CD.
 
 ---
 
@@ -43,9 +56,6 @@ Before using this project, ensure you have the following:
 ├── main.tf                         # Root Terraform configuration
 ├── variables.tf                    # Root variables
 ├── outputs.tf                      # Root outputs
-├── ansible/                        # Ansible playbooks and roles
-│   ├── playbook.yml                # Main playbook for EC2 configuration
-│   └── roles/                      # Ansible roles (if any)
 ├── README.md                       # Project documentation
 └── .gitignore                      # Git ignore file
 ```
@@ -57,13 +67,9 @@ Before using this project, ensure you have the following:
 ### 1. **Terraform**
 - **Modules**: Reusable components for VPC, EC2, security groups, etc.
 - **Dynamic Configuration**: Uses variables for regions, CIDR blocks, and environment-specific settings.
-- **Outputs**: Exports resource IDs, IPs, and other details for use in Ansible.
+- **Outputs**: Exports resource IDs, IPs, and other details.
 
-### 2. **Ansible**
-- **Playbooks**: Configures EC2 instances after Terraform provisioning.
-- **Dynamic Inventory**: Uses Terraform outputs to dynamically target EC2 instances.
-
-### 3. **CI/CD**
+### 2. **CI/CD**
 - **GitHub Actions**: Automates Terraform validation, planning, and deployment.
 - **Pipeline Stages**:
   - `validate`: Checks Terraform configuration.
@@ -113,9 +119,6 @@ To deploy to different regions:
 - Update the `region` variable in `variables.tf`.
 - Ensure the AMI IDs and availability zones are valid for the selected region.
 
-### 3. **Ansible Playbooks**
-Modify the `ansible/playbook.yml` file to customize EC2 configuration.
-
 ---
 
 ## Example Outputs
@@ -145,14 +148,15 @@ Contributions are welcome! Please follow these steps:
 
 ## License
 
-This project is licensed under the Apache License. 
+This project is licensed under the **Apache License**.
 
 ---
 
 ## Acknowledgments
 
 - **Terraform**: For enabling infrastructure as code.
-- **Ansible**: For simplifying configuration management.
 - **GitHub Actions**: For providing a robust CI/CD platform.
 
----
+--- 
+
+**Note**: This project is a work in progress, and new modules are being added regularly. Check back often for updates!
