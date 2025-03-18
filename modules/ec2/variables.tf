@@ -36,3 +36,8 @@ variable "user_data" {
   type        = string
   default     = ""
 }
+
+variable "iam_instance_profile" {
+  type = string
+  default = null
+}

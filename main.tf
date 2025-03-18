@@ -40,6 +40,15 @@ module "sg" {
   }
 }
 
+
+module "iam" {
+  source       = "./modules/iam"
+  project_name = var.project_name
+  tags         = var.tags
+}
+
+
+
 module "ec2" {
   source = "./modules/ec2"
 
@@ -49,6 +58,7 @@ module "ec2" {
   security_group_id  = module.sg.security_group_id
   project_name       = var.project_name
   tags               = var.tags
+  iam_instance_profile = module.iam.instance_profile_name
   user_data          = <<-EOF
                       #!/bin/bash
                       yum update -y
