@@ -26,3 +26,13 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "users" {
+  type = list(object({
+    name     = string
+    group    = string
+    existing = optional(bool, false)
+  }))
+  default     = []
+  description = "List of users to create or reference"
+}

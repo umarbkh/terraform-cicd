@@ -46,6 +46,10 @@ module "iam" {
   source       = "./modules/iam"
   project_name = var.project_name
   tags         = var.tags
+  users = [
+    { name = "alice", group = "admins", existing = false },
+    { name = "bob", group = "developers", existing = false }
+  ]
 }
 
 # Create an EC2 instance in the first public subnet

@@ -20,3 +20,10 @@ module "groups" {
   admin_policy_arns = [module.policies.admin_policy_arn]
   dev_policy_arns   = [module.policies.dev_policy_arn]
 }
+
+module "users" {
+  source       = "./users"
+  project_name = var.project_name
+  users = var.users
+  groups = module.groups.common_groups
+}

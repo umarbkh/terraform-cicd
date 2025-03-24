@@ -35,6 +35,13 @@ digraph G {
     "module.iam.module.roles.aws_iam_role.ec2_role" [label="aws_iam_role.ec2_role"];
     "module.iam.module.roles.aws_iam_role_policy_attachment.ec2_attach" [label="aws_iam_role_policy_attachment.ec2_attach"];
   }
+  subgraph "cluster_module.iam.module.users" {
+    label = "module.iam.module.users"
+    fontname = "sans-serif"
+    "module.iam.module.users.data.aws_iam_user.existing" [label="data.aws_iam_user.existing"];
+    "module.iam.module.users.aws_iam_group_membership.this" [label="aws_iam_group_membership.this"];
+    "module.iam.module.users.aws_iam_user.new" [label="aws_iam_user.new"];
+  }
   subgraph "cluster_module.sg" {
     label = "module.sg"
     fontname = "sans-serif"
@@ -59,6 +66,10 @@ digraph G {
   "module.iam.module.groups.aws_iam_group_policy_attachment.attach" -> "module.iam.module.groups.aws_iam_group.group";
   "module.iam.module.roles.aws_iam_role.ec2_role" -> "module.iam.module.policies.aws_iam_policy.ec2_policy";
   "module.iam.module.roles.aws_iam_role_policy_attachment.ec2_attach" -> "module.iam.module.roles.aws_iam_role.ec2_role";
+  "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.policies.aws_iam_policy.admin_policy";
+  "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.policies.aws_iam_policy.dev_policy";
+  "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.users.data.aws_iam_user.existing";
+  "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.users.aws_iam_user.new";
   "module.sg.aws_security_group.this" -> "module.vpc.aws_vpc.main";
   "module.vpc.aws_internet_gateway.igw" -> "module.vpc.aws_vpc.main";
   "module.vpc.aws_route_table.public" -> "module.vpc.aws_internet_gateway.igw";
