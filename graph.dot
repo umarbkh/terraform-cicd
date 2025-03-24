@@ -16,9 +16,17 @@ digraph G {
     fontname = "sans-serif"
     "module.iam.aws_iam_instance_profile.ec2_profile" [label="aws_iam_instance_profile.ec2_profile"];
   }
+  subgraph "cluster_module.iam.module.groups" {
+    label = "module.iam.module.groups"
+    fontname = "sans-serif"
+    "module.iam.module.groups.aws_iam_group.group" [label="aws_iam_group.group"];
+    "module.iam.module.groups.aws_iam_group_policy_attachment.attach" [label="aws_iam_group_policy_attachment.attach"];
+  }
   subgraph "cluster_module.iam.module.policies" {
     label = "module.iam.module.policies"
     fontname = "sans-serif"
+    "module.iam.module.policies.aws_iam_policy.admin_policy" [label="aws_iam_policy.admin_policy"];
+    "module.iam.module.policies.aws_iam_policy.dev_policy" [label="aws_iam_policy.dev_policy"];
     "module.iam.module.policies.aws_iam_policy.ec2_policy" [label="aws_iam_policy.ec2_policy"];
   }
   subgraph "cluster_module.iam.module.roles" {
@@ -46,6 +54,9 @@ digraph G {
   "module.ec2.aws_instance.ec2_instance" -> "module.sg.aws_security_group.this";
   "module.ec2.aws_instance.ec2_instance" -> "module.vpc.aws_subnet.public";
   "module.iam.aws_iam_instance_profile.ec2_profile" -> "module.iam.module.roles.aws_iam_role.ec2_role";
+  "module.iam.module.groups.aws_iam_group.group" -> "module.iam.module.policies.aws_iam_policy.admin_policy";
+  "module.iam.module.groups.aws_iam_group.group" -> "module.iam.module.policies.aws_iam_policy.dev_policy";
+  "module.iam.module.groups.aws_iam_group_policy_attachment.attach" -> "module.iam.module.groups.aws_iam_group.group";
   "module.iam.module.roles.aws_iam_role.ec2_role" -> "module.iam.module.policies.aws_iam_policy.ec2_policy";
   "module.iam.module.roles.aws_iam_role_policy_attachment.ec2_attach" -> "module.iam.module.roles.aws_iam_role.ec2_role";
   "module.sg.aws_security_group.this" -> "module.vpc.aws_vpc.main";

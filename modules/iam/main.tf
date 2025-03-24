@@ -13,3 +13,10 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   name = "${var.project_name}-ec2-profile"
   role = module.roles.ec2_role_name
 }
+
+module "groups" {
+  source         = "./groups"
+  project_name   = var.project_name
+  admin_policy_arns = [module.policies.admin_policy_arn]
+  dev_policy_arns   = [module.policies.dev_policy_arn]
+}

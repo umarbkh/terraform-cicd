@@ -20,6 +20,7 @@ module "vpc" {
   availability_zones  = module.data_az.availability_zones # Pass AZs here
 }
 
+# Create a security group
 module "sg" {
   source = "./modules/sg"
 
@@ -40,15 +41,14 @@ module "sg" {
   }
 }
 
-
+# Create IAM resources
 module "iam" {
   source       = "./modules/iam"
   project_name = var.project_name
   tags         = var.tags
 }
 
-
-
+# Create an EC2 instance in the first public subnet
 module "ec2" {
   source = "./modules/ec2"
 
