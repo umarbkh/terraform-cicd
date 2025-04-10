@@ -7,7 +7,7 @@
 ## About Me
 
 **Umar Bukhari**  
-AWS Sysops, AWS CCP, CompTIA A+ Certified Professional.  
+AWS Sysops, AWS CCP, Terraform Associate, CompTIA A+ Certified Professional.  
 My past experience includes MEAN Stack, PHP, JavaScript, WordPress, and basic Python automation.  
 
 - **LinkedIn**: [https://www.linkedin.com/in/umar-bukhari-96203284/](https://www.linkedin.com/in/umar-bukhari-96203284/)  
