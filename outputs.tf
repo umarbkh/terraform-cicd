@@ -23,5 +23,5 @@ output "ec2_instance_public_ip" {
 }
 
 output "webpage_url" {
-  value = "http://${module.ec2.ec2_instance_public_ip}"
+  value = "http://${join(", ", module.ec2.ec2_instance_public_ip)}"
 }

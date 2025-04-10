@@ -41,3 +41,22 @@ variable "iam_instance_profile" {
   type = string
   default = null
 }
+
+variable "load_balancer_sg_id" {
+  description = "The security group ID of the ELB"
+  type        = string
+}
+
+variable "elb_target_group_arn" {
+  description = "The ARN of the ELB target group"
+  type        = string
+}
+
+variable "instance_count" {
+  description = "Number of EC2 instances to create"
+  type        = number
+  default     = 1  # Default is 1, but you can override this in the root module
+}
+
+
+

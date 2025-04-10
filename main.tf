@@ -52,7 +52,20 @@ module "iam" {
   ]
 }
 
-# Create an EC2 instance in the first public subnet
+
+# Add the ELB module
+module "elb" {
+  source = "./modules/elb"
+
+  name               = "${var.project_name}-elb"
+  vpc_id             = module.vpc.vpc_id
+  subnets            = module.vpc.public_subnet_ids
+  security_group_id  = module.sg.security_group_id
+  instance_ports     = [80]  # Default port for EC2 instances (can add more if needed)
+  health_check_path  = "/"
+}
+
+# Modify EC2 module to integrate with ELB
 module "ec2" {
   source = "./modules/ec2"
 
@@ -71,4 +84,7 @@ module "ec2" {
                       systemctl enable httpd
                       echo "<h1>Hello from Terraform EC2!</h1>" > /var/www/html/index.html
                       EOF
+  load_balancer_sg_id = module.elb.security_group_id  # Add the ELB's security group
+  elb_target_group_arn = module.elb.target_group_arn  # Link to the ELB's target group
+  instance_count      = 2  # Create two instances
 }

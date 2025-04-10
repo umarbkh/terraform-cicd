@@ -26,4 +26,6 @@ module "users" {
   project_name = var.project_name
   users = var.users
   groups = module.groups.common_groups
+
+  depends_on = [module.groups]
 }

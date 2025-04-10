@@ -16,7 +16,6 @@ data "aws_iam_user" "existing" {
   user_name = each.value.name
 }
 
-# Group membership for all users
 resource "aws_iam_group_membership" "this" {
   for_each = { 
     for user in var.users : user.name => user 
@@ -26,4 +25,6 @@ resource "aws_iam_group_membership" "this" {
   name  = "${var.project_name}-${each.value.group}-membership"
   users = [each.value.existing ? each.value.name : aws_iam_user.new[each.key].name]
   group = var.groups[each.value.group].name
+
+
 }

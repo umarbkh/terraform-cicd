@@ -10,6 +10,14 @@ digraph G {
     label = "module.ec2"
     fontname = "sans-serif"
     "module.ec2.aws_instance.ec2_instance" [label="aws_instance.ec2_instance"];
+    "module.ec2.aws_lb_target_group_attachment.ec2_target" [label="aws_lb_target_group_attachment.ec2_target"];
+  }
+  subgraph "cluster_module.elb" {
+    label = "module.elb"
+    fontname = "sans-serif"
+    "module.elb.aws_lb.main" [label="aws_lb.main"];
+    "module.elb.aws_lb_listener.http" [label="aws_lb_listener.http"];
+    "module.elb.aws_lb_target_group.main" [label="aws_lb_target_group.main"];
   }
   subgraph "cluster_module.iam" {
     label = "module.iam"
@@ -57,9 +65,15 @@ digraph G {
     "module.vpc.aws_subnet.public" [label="aws_subnet.public"];
     "module.vpc.aws_vpc.main" [label="aws_vpc.main"];
   }
+  "module.ec2.aws_instance.ec2_instance" -> "module.elb.aws_lb.main";
   "module.ec2.aws_instance.ec2_instance" -> "module.iam.aws_iam_instance_profile.ec2_profile";
-  "module.ec2.aws_instance.ec2_instance" -> "module.sg.aws_security_group.this";
-  "module.ec2.aws_instance.ec2_instance" -> "module.vpc.aws_subnet.public";
+  "module.ec2.aws_lb_target_group_attachment.ec2_target" -> "module.ec2.aws_instance.ec2_instance";
+  "module.ec2.aws_lb_target_group_attachment.ec2_target" -> "module.elb.aws_lb_target_group.main";
+  "module.elb.aws_lb.main" -> "module.sg.aws_security_group.this";
+  "module.elb.aws_lb.main" -> "module.vpc.aws_subnet.public";
+  "module.elb.aws_lb_listener.http" -> "module.elb.aws_lb.main";
+  "module.elb.aws_lb_listener.http" -> "module.elb.aws_lb_target_group.main";
+  "module.elb.aws_lb_target_group.main" -> "module.vpc.aws_vpc.main";
   "module.iam.aws_iam_instance_profile.ec2_profile" -> "module.iam.module.roles.aws_iam_role.ec2_role";
   "module.iam.module.groups.aws_iam_group.group" -> "module.iam.module.policies.aws_iam_policy.admin_policy";
   "module.iam.module.groups.aws_iam_group.group" -> "module.iam.module.policies.aws_iam_policy.dev_policy";
@@ -68,7 +82,6 @@ digraph G {
   "module.iam.module.roles.aws_iam_role_policy_attachment.ec2_attach" -> "module.iam.module.roles.aws_iam_role.ec2_role";
   "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.policies.aws_iam_policy.admin_policy";
   "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.policies.aws_iam_policy.dev_policy";
-  "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.users.data.aws_iam_user.existing";
   "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.users.aws_iam_user.new";
   "module.sg.aws_security_group.this" -> "module.vpc.aws_vpc.main";
   "module.vpc.aws_internet_gateway.igw" -> "module.vpc.aws_vpc.main";
