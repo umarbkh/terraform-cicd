@@ -19,7 +19,7 @@ I am available for work, contracts, and job opportunities. Feel free to reach ou
 
 ## Project Overview
 
-This project demonstrates a **production-ready infrastructure deployment** on AWS using **Terraform**. It follows a **modular, reusable, and dynamic approach** to provision and configure resources, showcasing best practices for CI/CD and infrastructure as code (IaC).
+This project demonstrates a **production-ready infrastructure deployment** on AWS using **Terraform**. It follows a **modular, reusable, and dynamic approach** to provision and configure resources, showcasing best practices for CI/CD and infrastructure as code (IaC). Focus on Free Tier resources mostly or as low cost as possible. 
 
 ---
 

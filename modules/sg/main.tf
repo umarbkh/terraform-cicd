@@ -12,7 +12,8 @@ locals {
       from_port   = 80
       to_port     = 80
       protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = ["0.0.0.0/0"],
+      self        = true
     },
     https = {
       type        = "ingress"
@@ -41,13 +42,15 @@ resource "aws_security_group" "this" {
   vpc_id = var.vpc_id
   name   = var.name
 
+  
   dynamic "ingress" {
     for_each = [for rule in local.all_rules : rule if rule.type == "ingress"]
     content {
       from_port   = ingress.value.from_port
       to_port     = ingress.value.to_port
       protocol    = ingress.value.protocol
-      cidr_blocks = ingress.value.cidr_blocks
+      cidr_blocks = lookup(ingress.value, "cidr_blocks", null)  # Optional
+      self        = lookup(ingress.value, "self", null)
     }
   }
 

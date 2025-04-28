@@ -1,16 +1,16 @@
 digraph G {
   rankdir = "RL";
   node [shape = rect, fontname = "sans-serif"];
+  subgraph "cluster_module.autoscale" {
+    label = "module.autoscale"
+    fontname = "sans-serif"
+    "module.autoscale.aws_autoscaling_group.this" [label="aws_autoscaling_group.this"];
+    "module.autoscale.aws_launch_template.this" [label="aws_launch_template.this"];
+  }
   subgraph "cluster_module.data_az" {
     label = "module.data_az"
     fontname = "sans-serif"
     "module.data_az.data.aws_availability_zones.available" [label="data.aws_availability_zones.available"];
-  }
-  subgraph "cluster_module.ec2" {
-    label = "module.ec2"
-    fontname = "sans-serif"
-    "module.ec2.aws_instance.ec2_instance" [label="aws_instance.ec2_instance"];
-    "module.ec2.aws_lb_target_group_attachment.ec2_target" [label="aws_lb_target_group_attachment.ec2_target"];
   }
   subgraph "cluster_module.elb" {
     label = "module.elb"
@@ -55,6 +55,12 @@ digraph G {
     fontname = "sans-serif"
     "module.sg.aws_security_group.this" [label="aws_security_group.this"];
   }
+  subgraph "cluster_module.ssh_key" {
+    label = "module.ssh_key"
+    fontname = "sans-serif"
+    "module.ssh_key.aws_key_pair.this" [label="aws_key_pair.this"];
+    "module.ssh_key.tls_private_key.this" [label="tls_private_key.this"];
+  }
   subgraph "cluster_module.vpc" {
     label = "module.vpc"
     fontname = "sans-serif"
@@ -65,10 +71,11 @@ digraph G {
     "module.vpc.aws_subnet.public" [label="aws_subnet.public"];
     "module.vpc.aws_vpc.main" [label="aws_vpc.main"];
   }
-  "module.ec2.aws_instance.ec2_instance" -> "module.elb.aws_lb.main";
-  "module.ec2.aws_instance.ec2_instance" -> "module.iam.aws_iam_instance_profile.ec2_profile";
-  "module.ec2.aws_lb_target_group_attachment.ec2_target" -> "module.ec2.aws_instance.ec2_instance";
-  "module.ec2.aws_lb_target_group_attachment.ec2_target" -> "module.elb.aws_lb_target_group.main";
+  "module.autoscale.aws_autoscaling_group.this" -> "module.autoscale.aws_launch_template.this";
+  "module.autoscale.aws_autoscaling_group.this" -> "module.elb.aws_lb_target_group.main";
+  "module.autoscale.aws_autoscaling_group.this" -> "module.vpc.aws_subnet.private";
+  "module.autoscale.aws_launch_template.this" -> "module.iam.aws_iam_instance_profile.ec2_profile";
+  "module.autoscale.aws_launch_template.this" -> "module.sg.aws_security_group.this";
   "module.elb.aws_lb.main" -> "module.sg.aws_security_group.this";
   "module.elb.aws_lb.main" -> "module.vpc.aws_subnet.public";
   "module.elb.aws_lb_listener.http" -> "module.elb.aws_lb.main";
@@ -80,10 +87,11 @@ digraph G {
   "module.iam.module.groups.aws_iam_group_policy_attachment.attach" -> "module.iam.module.groups.aws_iam_group.group";
   "module.iam.module.roles.aws_iam_role.ec2_role" -> "module.iam.module.policies.aws_iam_policy.ec2_policy";
   "module.iam.module.roles.aws_iam_role_policy_attachment.ec2_attach" -> "module.iam.module.roles.aws_iam_role.ec2_role";
-  "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.policies.aws_iam_policy.admin_policy";
-  "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.policies.aws_iam_policy.dev_policy";
+  "module.iam.module.users.data.aws_iam_user.existing" -> "module.iam.module.groups.aws_iam_group_policy_attachment.attach";
   "module.iam.module.users.aws_iam_group_membership.this" -> "module.iam.module.users.aws_iam_user.new";
+  "module.iam.module.users.aws_iam_user.new" -> "module.iam.module.groups.aws_iam_group_policy_attachment.attach";
   "module.sg.aws_security_group.this" -> "module.vpc.aws_vpc.main";
+  "module.ssh_key.aws_key_pair.this" -> "module.ssh_key.tls_private_key.this";
   "module.vpc.aws_internet_gateway.igw" -> "module.vpc.aws_vpc.main";
   "module.vpc.aws_route_table.public" -> "module.vpc.aws_internet_gateway.igw";
   "module.vpc.aws_route_table_association.public" -> "module.vpc.aws_route_table.public";
