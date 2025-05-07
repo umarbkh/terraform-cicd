@@ -37,3 +37,8 @@ variable "users" {
   description = "List of users to create or reference"
 }
 
+variable "db_password" {
+  description = "Database password"
+  type        = string
+  sensitive   = true
+}

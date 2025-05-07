@@ -89,7 +89,6 @@ module "autoscale" {
                         systemctl enable httpd
                         echo "<h1>Hello from AutoScaling EC2!</h1>" > /var/www/html/index.html
                         EOF
-#   subnet_ids           = module.vpc.public_subnet_ids
   subnet_ids           = module.vpc.public_subnet_ids
   elb_target_group_arn = module.elb.target_group_arn
   tags                 = var.tags
@@ -97,4 +96,16 @@ module "autoscale" {
   max_size             = 4
   desired_capacity     = 2
 }
+
+# Create a multi AZ RDS instance with a read replica
+module "rds" {
+  source             = "./modules/rds"
+  project_name       = var.project_name
+  subnet_ids         = module.vpc.private_subnet_ids
+  security_group_ids = [module.sg.security_group_id]
+  db_username        = "${replace(var.project_name, "-", "")}admin"
+  instance_class     = "db.t3.micro"
+  db_password        = var.db_password
+}
+
 
