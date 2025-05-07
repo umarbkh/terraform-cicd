@@ -3,6 +3,7 @@ resource "aws_db_subnet_group" "this" {
   subnet_ids = var.subnet_ids
 }
 
+# Create a DB subnet group for the RDS instance
 resource "aws_db_instance" "primary" {
   identifier              = "${var.project_name}-db-primary"
   engine                  = "mysql"
@@ -13,16 +14,16 @@ resource "aws_db_instance" "primary" {
   db_subnet_group_name    = aws_db_subnet_group.this.name
   vpc_security_group_ids  = var.security_group_ids
   allocated_storage       = 20
-  skip_final_snapshot     = true
+  skip_final_snapshot     = true  
   multi_az                = true
   publicly_accessible     = false
   backup_retention_period = 7
   storage_encrypted       = true
-  db_name                 = "${replace(var.project_name, "-", "")}db"  # Corrected here
+  db_name                 = "${replace(var.project_name, "-", "")}db"
   port                    = 3306
 }
 
-
+# Create a read replica of the primary RDS instance
 resource "aws_db_instance" "replica" {
   identifier             = "${var.project_name}-db-replica"
   replicate_source_db    = aws_db_instance.primary.arn
@@ -30,4 +31,6 @@ resource "aws_db_instance" "replica" {
   db_subnet_group_name   = aws_db_subnet_group.this.name
   vpc_security_group_ids = var.security_group_ids
   publicly_accessible    = false
+  skip_final_snapshot    = true  
+  depends_on = [aws_db_instance.primary]
 }
