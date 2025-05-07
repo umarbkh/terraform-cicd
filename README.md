@@ -39,6 +39,7 @@ Before using this project, ensure you have the following:
 1. **AWS Account**: With IAM credentials (access key and secret key).
 2. **Terraform**: Installed locally (if testing locally).
 3. **GitHub Repository**: To host the project and enable CI/CD.
+4. **Create a terrform.tfvars file**: add and update these variables project_name = "my-project", ami_id = "ami-01816d07b1128cd2d", db_password = "add pass here" 
 
 ---
 
