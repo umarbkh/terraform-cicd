@@ -1,6 +1,6 @@
 # Terraform AWS Deployment Project
 
-**Work in Progress**: This project is actively being developed, with new modules and features being added regularly. Stay tuned for updates!
+This project is actively being developed, with new modules and features being added regularly. Stay tuned for updates!
 
 ---
 
